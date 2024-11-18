@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->boolean('status')->default(0);
             $table->date('due_date')->nullable();
+            $table->string('image_url')->nullable();
             $table->timestamps();
         });
     }

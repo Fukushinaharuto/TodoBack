@@ -16,21 +16,22 @@ class TodoSeeder extends Seeder
         DB::table('todos')->insert([
             [
                 'title' => 'Buy groceries',
-                'status' => false,
+                'status' => 0,
                 'due_date' => Carbon::now()->addDays(3)->toDateString(),
+                
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
             [
                 'title' => 'Read a book',
-                'status' => false,
+                'status' => 0,
                 'due_date' => Carbon::now()->addDays(7)->toDateString(),
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
             [
                 'title' => 'Exercise',
-                'status' => true,
+                'status' => 1,
                 'due_date' => null,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),

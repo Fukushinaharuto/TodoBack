@@ -15,5 +15,4 @@ Route::get('/api', function() {
         "hello" => "連携完了最高"
     ]);
 });
-
-Route::get('/todos', [TodoController::class, 'index']);
+Route::apiResource('todos', TodoController::class)->only(['index', 'create', 'update', 'destroy']);
