@@ -4,15 +4,17 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Todo;
+use Illuminate\Support\Facades\Auth;
 
 class TodoController extends Controller
 {
     function index(Request $request) {
+        $user = Auth::user(); 
         $query = $request->input('query');
         if(!empty($query)){
-            $todos = Todo::where('title', 'like', '%' . $query . '%')->get();
+            $todos = $user->todos()->where('title', 'like', '%' . $query . '%')->get();
         }else{
-            $todos = Todo::all();
+            $todos = $user->todos()->get();
         }
         
 
@@ -22,14 +24,14 @@ class TodoController extends Controller
     }
 
     function store(Request $request) {
+        $user = Auth::user();
         try{
             $validated = $request->validate([
                 'title' => 'required|string|max:255',
                 'due_date' => 'nullable|date',
                 'status' => 'boolean',
-                'image_url' => 'nullable|string'
             ]);
-            $todo = Todo::create($validated);
+            $todo = $user->todos()->create($validated);
     
             return response()->json($todo, 201);
         }catch(\Exception $e){
