@@ -7,6 +7,7 @@ use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -18,6 +19,7 @@ class AuthenticatedSessionController extends Controller
         if($user){
             return response()->json([
                 'name' => $user->name,
+                'email' => $user->email,
             ]);
         }else{
             return response()->json([
@@ -25,6 +27,37 @@ class AuthenticatedSessionController extends Controller
             ]);
         }
     }
+
+    public function update(Request $request) {
+        $user = Auth::user();
+
+    $validateData = $request->validate([
+        'name' => 'nullable|string|max:255',
+        'email' => 'nullable|email|unique:users,email,' . $user->id,
+        'password' => 'nullable|min:8',
+    ]);
+        if(!empty($validateData['name'])){
+            $user->name = $validateData['name'];
+        }
+        if(!empty($validateData['email'])){
+            $user->email = $validateData['email'];
+        }
+        if(!empty($validateData['password'])){
+            $user->password = Hash::make($validateData['password']);
+        }
+        $user->tokens()->delete();
+        $newToken = $user->createToken('authToken')->plainTextToken;
+        
+        $user->save();
+
+        return response()->json([
+            'name' => $user->name,
+            'email' => $user->email,
+            'token' => $newToken,
+        ]);
+        
+    }
+
     public function store(Request $request)
     {
         $request->validate([
@@ -45,9 +78,8 @@ class AuthenticatedSessionController extends Controller
                 'message' => 'ログインに失敗しました',
             ]);
         }
-
-        
     }
+
 
     
 }
