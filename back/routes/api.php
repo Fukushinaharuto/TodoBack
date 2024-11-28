@@ -11,6 +11,7 @@ Route::middleware("auth:sanctum")->group(function () {
     Route::apiResource('todos', TodoController::class)->only(['index', 'store', 'update', 'destroy']);
     Route::get('/userName', [AuthenticatedSessionController::class, 'index']);
     Route::patch('/profile', [AuthenticatedSessionController::class, 'update']);
+    Route::post('/passwordAuth', [AuthenticatedSessionController::class, 'passwordAuth']);
 });
 
 Route::post('/register', [RegisteredUserController::class, 'store']);

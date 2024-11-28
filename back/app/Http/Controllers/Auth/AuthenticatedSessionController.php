@@ -80,6 +80,26 @@ class AuthenticatedSessionController extends Controller
         }
     }
 
+    public function passwordAuth(Request $request){
+        $user = Auth::user();
+        if (!$user) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+        $validateData = $request->validate([
+            'password' => 'required|min:8'
+        ]);
+        $password = $validateData['password'];
+        if(Hash::check($password, $user->password)){
+            $permission = true;
+        }else{
+            $permission = false;
+        }
+
+        return response()->json([
+            'permission' => $permission,
+        ]);
+    }
+
 
     
 }
