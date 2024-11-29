@@ -12,6 +12,7 @@ Route::middleware("auth:sanctum")->group(function () {
     Route::get('/userName', [AuthenticatedSessionController::class, 'index']);
     Route::patch('/profile', [AuthenticatedSessionController::class, 'update']);
     Route::post('/passwordAuth', [AuthenticatedSessionController::class, 'passwordAuth']);
+    Route::patch('/toggleStatus/{id}', [TodoController::class, 'toggleStatus']);
 });
 
 Route::post('/register', [RegisteredUserController::class, 'store']);

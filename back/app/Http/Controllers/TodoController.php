@@ -42,7 +42,11 @@ class TodoController extends Controller
 
     function update(Request $request , $id) {
         $todo = Todo::findOrfail($id);
-        $todo->status = $request->input('status');
+        $validated = $request->validate([
+            'title' => 'require|string|max:255',
+            'due_date' => 'nullabel|date',
+        ]);
+        $todo->fill($validated);
         $todo->save();
         
         return response()->json(['todo' => $todo]);
@@ -56,6 +60,14 @@ class TodoController extends Controller
         $todo->delete();
         return response()->json(['message' => '削除成功'], 200);
 
+    }
+
+    function toggleStatus(Request $request, $id) {
+        $todo = Todo::findOrFail($id);
+        $todo->status = $request->input('status');
+        $todo->save();
+    
+        return response()->json(['todo' => $todo]);
     }
 
 }
