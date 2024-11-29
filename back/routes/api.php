@@ -9,10 +9,11 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 Route::middleware("auth:sanctum")->group(function () {
     Route::apiResource('todos', TodoController::class)->only(['index', 'store', 'update', 'destroy']);
+    Route::patch('/todos/{id}/toggleStatus', [TodoController::class, 'toggleStatus']);
     Route::get('/userName', [AuthenticatedSessionController::class, 'index']);
     Route::patch('/profile', [AuthenticatedSessionController::class, 'update']);
     Route::post('/passwordAuth', [AuthenticatedSessionController::class, 'passwordAuth']);
-    Route::patch('/toggleStatus/{id}', [TodoController::class, 'toggleStatus']);
+    
 });
 
 Route::post('/register', [RegisteredUserController::class, 'store']);

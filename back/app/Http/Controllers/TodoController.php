@@ -43,8 +43,8 @@ class TodoController extends Controller
     function update(Request $request , $id) {
         $todo = Todo::findOrfail($id);
         $validated = $request->validate([
-            'title' => 'require|string|max:255',
-            'due_date' => 'nullabel|date',
+            'title' => 'required|string|max:255',
+            'due_date' => 'nullable|date',
         ]);
         $todo->fill($validated);
         $todo->save();
